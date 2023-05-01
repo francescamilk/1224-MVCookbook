@@ -23,14 +23,20 @@ class Cookbook
         save_csv()
     end
 
+    def update_mark(index)
+        # find recipe by index
+        recipe = @recipes[index]
+        # update the completed status
+        recipe.mark_completed!
+        save_csv()
+    end
+
     private
 
     def save_csv
         CSV.open(@csv_file, "wb") do |csv|
             @recipes.each do |recipe|
-                # <Recipe0x89786 @name="pizza" @description="italian">
-                csv << [recipe.name, recipe.description]
-                # ["pizza", "description"]
+                csv << [recipe.name, recipe.description, recipe.rating, recipe.completed, recipe.prep_time]
             end
         end
     end
@@ -39,8 +45,11 @@ class Cookbook
         CSV.foreach(@csv_file) do |row|
             name        = row[0]
             description = row[1]
+            rating      = row[2].to_i
+            completed   = row[3] == "true"  
+            prep_time   = row[4].to_i
 
-            @recipes << Recipe.new(name, description)
+            @recipes << Recipe.new(name, description, rating, completed, prep_time)
         end
     end
 end

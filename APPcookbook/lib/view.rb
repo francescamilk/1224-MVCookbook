@@ -1,19 +1,10 @@
 class View
     def display_recipes(recipes)
         recipes.each_with_index do |recipe, i|
-            puts "#{i + 1}. #{recipe.name}"
+            box = recipe.completed ? "[X]" : "[ ]"
+            puts "#{i + 1}. #{box} #{recipe.name} #{'*' * recipe.rating}"
         end
     end
-
-    # def ask_for_name
-    #     puts "What's the name?"
-    #     gets.chomp
-    # end
-
-    # def ask_for_description
-    #     puts "What's the description?"
-    #     gets.chomp
-    # end
 
     def ask_for(thing)
         puts "What's the #{thing}?"
